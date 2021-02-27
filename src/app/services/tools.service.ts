@@ -30,7 +30,7 @@ export class ToolsService {
   async presentLoading(mensaje:string = "") {
     this.loading = await this.loadingCrl.create({
       message: mensaje || 'Cargando ...',
-      duration: 5000,
+      duration: 1000,
       translucent: true,
       backdropDismiss: true
     });

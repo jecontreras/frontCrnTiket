@@ -1,5 +1,9 @@
 <ion-header no-border translucent></ion-header>
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullMin="200" pullMax="300" *ngIf="vista">
+    <ion-refresher-content>
+    </ion-refresher-content>
+  </ion-refresher>
   <ion-list *ngIf="vista">
     <ion-item lines="none">
       <ion-toolbar>
@@ -24,6 +28,12 @@
       </ion-toolbar>
     </ion-list-header>
     <ion-item>
+
+      <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullMin="200" pullMax="300">
+        <ion-refresher-content>
+        </ion-refresher-content>
+      </ion-refresher>
+
       <ion-searchbar showCancelButton="focus" debounce="700" [value]="textoBuscar"
         (ionChange)="buscarProducto( $event)"></ion-searchbar>
     </ion-item>
@@ -36,6 +46,13 @@
       <ion-text color="dark" slot="end">
         {{ _tools.monedaChange( 3, 2, item.valor || 0 ) }}
       </ion-text>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-infinite-scroll threshold="150px" (ionInfinite)="loadData( $event )">
+        <ion-infinite-scroll-content loadingSpinner="crescent" loadingtext="Cargando data..">
+
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
     </ion-item>
   </ion-list>
 
@@ -68,7 +85,7 @@
 </ion-content>
 <ion-footer>
   <ion-list *ngIf="!vista">
-    <ion-item lines = "none">
+    <ion-item lines="none">
       <ion-text color="dark">
         Precio Final: {{ _tools.monedaChange( 3, 2, data.total || 0 ) }}
       </ion-text>

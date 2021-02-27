@@ -7,10 +7,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/tabs/tabs.module').then( m => m.TabsPageModule)
   },
   {
-    path: 'categorias',
-    loadChildren: () => import('./pages/categorias/categorias.module').then( m => m.CategoriasPageModule)
-  },
-  {
     path: 'portada',
     loadChildren: () => import('./layout/portada/portada.module').then( m => m.PortadaPageModule)
   },
@@ -21,7 +17,8 @@ const routes: Routes = [
   {
     path: 'registro',
     loadChildren: () => import('./layout/registro/registro.module').then( m => m.RegistroPageModule)
-  },  {
+  },
+  {
     path: 'ayudas',
     loadChildren: () => import('./layout/ayudas/ayudas.module').then( m => m.AyudasPageModule)
   }

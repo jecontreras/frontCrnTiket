@@ -16,7 +16,6 @@ import { environment } from 'src/environments/environment';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { FormordenesPageModule } from './form/formordenes/formordenes.module';
 import { ComponentsModule } from 'src/app/components/components.module';
-import { ProductosPageModule } from './pages/productos/productos.module';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
@@ -40,7 +39,6 @@ import { NgxCurrencyModule } from "ngx-currency";
     HttpClientModule,
     FormordenesPageModule,
     ComponentsModule,
-    ProductosPageModule,
     NgxCurrencyModule
   ],
   providers: [
