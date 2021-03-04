@@ -65,7 +65,7 @@ export class HomePage implements OnInit {
   getProductos(){
     //this._tools.presentLoading();
     this._productos.get( this.querys ).subscribe( ( res:any )=>{
-      this.listArticulos = res.data;
+      this.listArticulos = _.unionBy(this.listArticulos || [], res.data, 'id');;
       if( this.evScroll.target ){
         this.evScroll.target.complete()
       }

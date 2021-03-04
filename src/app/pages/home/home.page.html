@@ -106,54 +106,75 @@
     <ion-item>
       <ion-text color="primary">
         <label for="">Tipo de Tiket: </label>
-        <span>{{ data.domicilio ? "Domicilio" : "" }}</span>
+        <span class="colorNegro" *ngIf="data.domicilio"> Domicilio</span>
+        <span class="colorNegro" *ngIf="data.mesa"> Mesa</span>
+        <span class="colorNegro" *ngIf="!data.mesa && !data.domicilio"> Particular</span>
       </ion-text>
     </ion-item>
     <ion-item>
       <ion-text color="primary">
         <label for="">Cliente: </label>
-        <span>{{ data.cliente | slice: 0: 100 }}</span>
+        <span class="colorNegro">{{ data.cliente | slice: 0: 100 }}</span>
       </ion-text>
+    </ion-item>
+    <ion-item>
       <ion-text color="primary" *ngIf="data.direccionCliente">
         <label for="">Direccion Cliente: </label>
-        <span>{{ data.direccionCliente | slice: 0: 300 }}</span>
+        <span class="colorNegro">{{ data.direccionCliente | slice: 0: 300 }}</span>
       </ion-text>
+    </ion-item>
+    <ion-item>
       <ion-text color="primary" *ngIf="data.celularCliente">
         <label for="">Celular Cliente: </label>
-        <span>{{ data.celularCliente }}</span>
+        <span class="colorNegro">{{ data.celularCliente }}</span>
       </ion-text>
     </ion-item>
     <ion-item>
       <ion-text color="primary">
         <label for="">Detalles: </label>
-        <span>{{ data.detalles | slice: 0: 400 }}</span>
+        <span class="colorNegro">{{ data.detalles | slice: 0: 400 }}</span>
       </ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-toolbar>
+        <div class="ion-text-center">
+          <ion-title color="primary">
+            Productos Seleccionados
+          </ion-title>
+        </div>
+      </ion-toolbar>
     </ion-item>
     <ion-item *ngFor="let item of listSeleccionado" (click)="seleccionando( item )" lines="none" [ngClass]="{
       'check': item.check
     }">
+    <ion-label>
       <ion-text color="dark" slot="start">
-        {{ item.titulo | slice: 0: 100 }}
-      </ion-text>
+        <label>Producto: </label>
+        <span> {{ item.titulo | slice: 0: 300 }} </span>
+      </ion-text><br>
       <ion-text color="dark">
         <label>Cantidad: </label>
         <span> {{ item.cantidad }} </span>
+      </ion-text><br>
+      <ion-text color="dark">
+        <label>Precio: </label>
+        <span> {{ _tools.monedaChange( 3, 2, item.valor || 0 ) }} </span>
+      </ion-text><br>
+      <ion-text color="dark">
+        <label>Total: </label>
+        <span> {{ _tools.monedaChange( 3, 2, item.valor * item.cantidad || 0 ) }} </span>
       </ion-text>
-      <ion-text color="dark" slot="end">
-        {{ _tools.monedaChange( 3, 2, item.valor || 0 ) }}
-      </ion-text>
+    </ion-label>
     </ion-item>
   </ion-list>
 
 </ion-content>
 <ion-footer>
-  <ion-list *ngIf="!vista">
-    <ion-item lines="none">
-      <ion-text color="dark">
-        Precio Final: {{ _tools.monedaChange( 3, 2, data.total || 0 ) }}
-      </ion-text>
-    </ion-item>
-  </ion-list>
+  <ion-toolbar *ngIf="!vista" class="footerFinal">
+    <ion-text color="dark">
+      Precio Final: {{ _tools.monedaChange( 3, 2, data.total || 0 ) }}
+    </ion-text>
+  </ion-toolbar>
   <ion-toolbar>
     <ion-button color="warning" expand="full" (click)="verTiket()" *ngIf="vista">
       Resumen Tiket
