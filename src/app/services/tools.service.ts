@@ -123,7 +123,7 @@ export class ToolsService {
           {
             name: 'valor',
             type: 'number',
-            // value: "1",
+            value: "1",
             placeholder: 'Cantidad asignar...'
           }
         ],

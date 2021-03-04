@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import { STORAGES } from 'src/app/interfas/sotarage';
 import { Store } from '@ngrx/store';
 import { OrdenesAction } from 'src/app/redux/app.actions';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-ordenes',
@@ -25,19 +26,25 @@ export class OrdenesPage implements OnInit {
   public evScroll:any = {};
   dataUser: any = {};
   disabled:boolean = false;
-
+  vista: number;
+  filtro:any = {
+    estado: 0
+  };
   constructor(
     private _ordenes: OrdenesService,
     public _tools: ToolsService,
     private modalCtrl: ModalController,
     private _store: Store<STORAGES>,
+    private activate: ActivatedRoute,
   ) { 
     this.storeProcess();
   }
 
   ngOnInit() {
-    
+    this.vista = Number( ( this.activate.snapshot.paramMap.get('id') ) );
+    console.log( this.vista )
   }
+
   storeProcess(){
     this._store.subscribe((store:any)=>{
       store = store.name;
@@ -46,10 +53,19 @@ export class OrdenesPage implements OnInit {
       this.dataUser = store.persona || {};
     });
   }
+
   async ionViewWillEnter(){
     this.storeProcess();
     console.log( this.listOrdenes );
     if(Object.keys(this.listOrdenes).length == 0) this.getOrdenes();
+  }
+
+  filtroSerach(){
+    console.log( this.filtro );
+    this.query.where.estado = Number( this.filtro.estado );
+    this.query.skip = 0;
+    this.listOrdenes = [];
+    this.getOrdenes();
   }
 
   doRefresh(ev){

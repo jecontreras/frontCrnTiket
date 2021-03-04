@@ -9,12 +9,6 @@
         Ordenes
       </ion-label>
     </ion-text>
-    <ion-button color="light" fill="clear" slot="end" (click)="openSearch()">
-      <ion-icon name="search"></ion-icon>
-    </ion-button>
-    <ion-button color="light" fill="clear" slot="end" (click)="agregar(false)">
-      <ion-icon name="add-circle-outline"></ion-icon>
-    </ion-button>
   </ion-toolbar>
 
 </ion-header>
@@ -25,6 +19,15 @@
     <ion-refresher-content>
     </ion-refresher-content>
   </ion-refresher>
+
+  <ion-item lines="none">
+    <ion-label>Estado</ion-label>
+          <ion-select interface="popover" [(ngModel)]="filtro.estado" (ngModelChange)="filtroSerach()">
+            <ion-select-option value="0">Activa</ion-select-option>
+            <ion-select-option value="1">Finalizadas</ion-select-option>
+            <ion-select-option value="2">Canceladas</ion-select-option>
+          </ion-select>
+  </ion-item>
 
   <ion-list #lista>
 
@@ -37,10 +40,7 @@
       <ion-item [ngClass]="{
         'estProceso':item.estado === 0,
         'estCompletado':item.estado === 1,
-        'estEliminado':item.estado === 2,
-        'estCancelado':item.estado === 3,
-        'estNovedad':item.estado === 4,
-        'estEnviando':item.estado === 5
+        'estEliminado':item.estado === 2
       }">
         <ion-avatar slot="start" (click)="agregar(item)">
           <img [src]="item['idCliente']?.idFoto || './assets/perfil.png'">
@@ -78,10 +78,7 @@
 
   <div class="ion-text-center" *ngIf="listOrdenes.length === 0">
     <ion-title>
-      <h6>No hay datos a mostrar <br><ion-button color="success" fill="clear" slot="end" (click)="agregar(false)">
-          Crear
-        </ion-button>
-      </h6>
+      <h6>No hay datos a mostrar <br></h6>
     </ion-title>
   </div>
 

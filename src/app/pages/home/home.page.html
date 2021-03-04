@@ -14,9 +14,37 @@
         </div>
       </ion-toolbar>
     </ion-item>
+    <ion-item lines="none">
+      <ion-toolbar>
+        <ion-item slot="start" lines="none">
+          <ion-checkbox color="danger" [disabled]="data.mesa" [(ngModel)]="data.domicilio" checked slot="start"></ion-checkbox>
+          <ion-label>Domicilio</ion-label>
+        </ion-item>
+        <ion-item slot="end" lines="none">
+          <ion-checkbox [disabled]="data.domicilio" color="danger" [(ngModel)]="data.mesa" checked slot="start"></ion-checkbox>
+          <ion-label>Mesa</ion-label>
+        </ion-item>
+      </ion-toolbar>
+    </ion-item>
+    <ion-item *ngIf="!data.mesa">
+      <ion-label position="floating">Nombre del Cliete</ion-label>
+      <ion-input autofocus [(ngModel)]="data.cliente" type="text"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="data.mesa">
+      <ion-label position="floating">Numero de Mesa</ion-label>
+      <ion-input autofocus [(ngModel)]="data.cliente" type="text"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="data.domicilio">
+      <ion-label position="floating">Direccion Cliente</ion-label>
+      <ion-input autofocus [(ngModel)]="data.direccionCliente" type="text"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="data.domicilio">
+      <ion-label position="floating">Celular Cliente</ion-label>
+      <ion-input autofocus [(ngModel)]="data.celularCliente" type="text"></ion-input>
+    </ion-item>
     <ion-item>
-      <ion-label position="floating">Nombre del ( Cliente o mesa )</ion-label>
-      <ion-input [(ngModel)]="data.cliente" type="text"></ion-input>
+      <ion-label position="floating">Detalles</ion-label>
+      <ion-textarea rows="3" cols="6" [(ngModel)]="data.detalles" placeholder="Describe sus detalles"></ion-textarea>
     </ion-item>
     <ion-list-header>
       <ion-toolbar>
@@ -65,6 +93,41 @@
           </ion-title>
         </div>
       </ion-toolbar>
+    </ion-item>
+    <ion-item>
+      <ion-toolbar>
+        <div class="ion-text-center">
+          <ion-title color="primary">
+            Datos del cliente
+          </ion-title>
+        </div>
+      </ion-toolbar>
+    </ion-item>
+    <ion-item>
+      <ion-text color="primary">
+        <label for="">Tipo de Tiket: </label>
+        <span>{{ data.domicilio ? "Domicilio" : "" }}</span>
+      </ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-text color="primary">
+        <label for="">Cliente: </label>
+        <span>{{ data.cliente | slice: 0: 100 }}</span>
+      </ion-text>
+      <ion-text color="primary" *ngIf="data.direccionCliente">
+        <label for="">Direccion Cliente: </label>
+        <span>{{ data.direccionCliente | slice: 0: 300 }}</span>
+      </ion-text>
+      <ion-text color="primary" *ngIf="data.celularCliente">
+        <label for="">Celular Cliente: </label>
+        <span>{{ data.celularCliente }}</span>
+      </ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-text color="primary">
+        <label for="">Detalles: </label>
+        <span>{{ data.detalles | slice: 0: 400 }}</span>
+      </ion-text>
     </ion-item>
     <ion-item *ngFor="let item of listSeleccionado" (click)="seleccionando( item )" lines="none" [ngClass]="{
       'check': item.check

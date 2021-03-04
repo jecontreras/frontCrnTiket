@@ -75,6 +75,11 @@ export class HomePage implements OnInit {
           this.ev.target.complete();
         }
       }
+      this.listArticulos = _.map( this.listArticulos, ( item:any )=>{
+        let filtro:any = this.listSeleccionado.find(( row:any )=> row.id == item.id );
+        if( filtro ) item.check = true;
+        return item;
+      });
       //this._tools.dismisPresent();
     },( error:any )=> { this._tools.presentToast( "Error de servidor" )} );
   }
@@ -157,6 +162,7 @@ export class HomePage implements OnInit {
     if( !alert ) return false;
     if( this.disabledAccion ) return false;
     this.disabledAccion = true;
+    console.log( this.data );
     let data:any = {
       cliente: this.data.cliente,
       factura:{
@@ -164,7 +170,10 @@ export class HomePage implements OnInit {
         precio: this.data.total,
         fecha_pedido: new Date(),
         detalles: this.data.detalles,
-        codigo: this._tools.codigo()
+        codigo: this._tools.codigo(),
+        domicilio: this.data.domicilio,
+        direccionCliente: this.data.direccionCliente,
+        celularCliente: this.data.celularCliente
       },
       articulo: this.listSeleccionado
     };
@@ -180,7 +189,7 @@ export class HomePage implements OnInit {
   resetearDatos(){
     this.data = {};
     this.listSeleccionado = [];
-    this.listSeleccionado = _.map( row =>{
+    this.listArticulos = _.map( row =>{
       return {
         ...row,
         check: false

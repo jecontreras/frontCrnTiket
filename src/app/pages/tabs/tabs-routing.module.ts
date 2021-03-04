@@ -41,16 +41,6 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'categorias',
-        children: [
-          {
-            path: '',
-            loadChildren: () =>
-              import('../categorias/categorias.module').then(m => m.CategoriasPageModule)
-          }
-        ]
-      },
-      {
         path: 'perfil',
         children: [
           {

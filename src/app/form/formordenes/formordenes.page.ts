@@ -50,18 +50,7 @@ export class FormordenesPage implements OnInit {
     this.evento = this.navparams.get('obj');
     if(this.evento){
       this.data = {
-        cliente: {
-          emailCliente: this.evento.emailCliente,
-          cedulaCliente: this.evento.cedulaCliente,
-          numeroCliente: this.evento.numeroCliente,
-          ciudadCliente: this.evento.ciudadCliente,
-          nombreCliente: this.evento.idCliente.nombre,
-          emailVendedor: this.evento.emailVendedor,
-          cedulaVendedor: this.evento.cedulaVendedor,
-          celularCliente: this.evento.idCliente.cedula,
-          direccionCliente: this.evento.direccionCliente,
-          barrioCliente: this.evento.barrioCliente
-        },
+        ... this.evento,
         factura: {
           fecha_pedido: this.evento.fecha_pedido,
           id: this.evento.id,
@@ -79,7 +68,8 @@ export class FormordenesPage implements OnInit {
         empresaTrans: this.evento.empresaTrans,
         articulo: []
       };
-      this.titulo = "Actualizar";
+      this.titulo = "Ver";
+      console.log( this.data, this.evento );
       this.getArticulo();
     }
   }
