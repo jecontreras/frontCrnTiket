@@ -21,7 +21,11 @@ const routes: Routes = [
   {
     path: 'ayudas',
     loadChildren: () => import('./layout/ayudas/ayudas.module').then( m => m.AyudasPageModule)
+  },  {
+    path: 'resumen',
+    loadChildren: () => import('./pages/resumen/resumen.module').then( m => m.ResumenPageModule)
   }
+
 
 ];
 

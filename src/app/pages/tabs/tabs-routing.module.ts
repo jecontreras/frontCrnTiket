@@ -51,6 +51,16 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'resumen',
+        children: [
+          {
+            path: '',
+            loadChildren: () =>
+              import('../resumen/resumen.module').then(m => m.ResumenPageModule)
+          }
+        ]
+      },
+      {
         path: 'menu',
         children: [
           {

@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Resumen de Ventas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list *ngIf="listRow.pizzas">
+    <ion-item>
+      <ion-text color="primary">
+        <label for="">Pizzas Resumen: </label>
+      </ion-text>
+    </ion-item>
+    <ion-item *ngFor="let item of listRow.pizzas">
+      <ion-text color="primary">
+        <label for="">Pizza: </label>
+        <span class="colorNegro">{{ item.titulo | slice: 0: 100 }}</span>
+      </ion-text><br>
+      <ion-text color="primary">
+        <label for="">Cantidad: </label>
+        <span class="colorNegro">{{ item.cantidad }}</span>
+      </ion-text>
+      <br>
+      <ion-text color="primary">
+        <label for="">Precio Final: </label>
+        <span class="colorNegro">{{ item.precio }}</span>
+      </ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-text color="primary">
+        <label for="">Gaceosa Resumen: </label>
+      </ion-text>
+    </ion-item>
+    <ion-item *ngFor="let item of listRow.gaceosas">
+      <ion-text color="primary">
+        <label for="">Pizza: </label>
+        <span class="colorNegro">{{ item.titulo | slice: 0: 100 }}</span>
+      </ion-text><br>
+      <ion-text color="primary">
+        <label for="">Cantidad: </label>
+        <span class="colorNegro">{{ item.cantidad }}</span>
+      </ion-text>
+      <br>
+      <ion-text color="primary">
+        <label for="">Precio Final: </label>
+        <span class="colorNegro">{{ item.precio }}</span>
+      </ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-text color="primary">
+        <label for="">Lasaña Resumen: </label>
+      </ion-text>
+    </ion-item>
+    <ion-item *ngFor="let item of listRow.lasana">
+      <ion-text color="primary">
+        <label for="">Pizza: </label>
+        <span class="colorNegro">{{ item.titulo | slice: 0: 100 }}</span>
+      </ion-text><br>
+      <ion-text color="primary">
+        <label for="">Cantidad: </label>
+        <span class="colorNegro">{{ item.cantidad }}</span>
+      </ion-text>
+      <br>
+      <ion-text color="primary">
+        <label for="">Precio Final: </label>
+        <span class="colorNegro">{{ item.precio }}</span>
+      </ion-text>
+    </ion-item>
+  </ion-list>
+</ion-content>

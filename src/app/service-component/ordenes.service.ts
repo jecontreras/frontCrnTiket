@@ -23,6 +23,10 @@ export class OrdenesService {
     return this._model.querys<ORDENES>('facturasArticulos/querys', query, 'post');
   }
 
+  getResumen(query: any){
+    return this._model.querys<ORDENES>('facturas/resumen', query, 'post');
+  }
+
   saved (query: any){
     return this._model.querys<ORDENES>('facturas', query, 'post');
   }

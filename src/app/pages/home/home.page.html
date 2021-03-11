@@ -103,8 +103,8 @@
         </div>
       </ion-toolbar>
     </ion-item>
-    <ion-item>
-      <ion-text color="primary">
+    <ion-item [ngStyle]="{ 'background':urlColor }">
+      <ion-text [color]="urlColor">
         <label for="">Tipo de Tiket: </label>
         <span class="colorNegro" *ngIf="data.domicilio"> Domicilio</span>
         <span class="colorNegro" *ngIf="data.mesa"> Mesa</span>
@@ -117,14 +117,14 @@
         <span class="colorNegro">{{ data.cliente | slice: 0: 100 }}</span>
       </ion-text>
     </ion-item>
-    <ion-item>
-      <ion-text color="primary" *ngIf="data.direccionCliente">
+    <ion-item *ngIf="data.direccionCliente">
+      <ion-text color="primary">
         <label for="">Direccion Cliente: </label>
         <span class="colorNegro">{{ data.direccionCliente | slice: 0: 300 }}</span>
       </ion-text>
     </ion-item>
-    <ion-item>
-      <ion-text color="primary" *ngIf="data.celularCliente">
+    <ion-item *ngIf="data.celularCliente">
+      <ion-text color="primary">
         <label for="">Celular Cliente: </label>
         <span class="colorNegro">{{ data.celularCliente }}</span>
       </ion-text>
@@ -144,15 +144,17 @@
         </div>
       </ion-toolbar>
     </ion-item>
-    <ion-item *ngFor="let item of listSeleccionado" (click)="seleccionando( item )" lines="none" [ngClass]="{
-      'check': item.check
-    }">
+    <ion-item *ngFor="let item of listSeleccionado" (click)="seleccionando( item )" lines="none">
     <ion-label>
       <ion-text color="dark" slot="start">
         <label>Producto: </label>
         <span> {{ item.titulo | slice: 0: 300 }} </span>
       </ion-text><br>
-      <ion-text color="dark">
+      <ion-text color="danger" slot="start">
+        <label>Descripcion: </label>
+        <span> {{ item.descripcion | slice: 0: 300 }} </span>
+      </ion-text><br>
+      <ion-text color="medium">
         <label>Cantidad: </label>
         <span> {{ item.cantidad }} </span>
       </ion-text><br>

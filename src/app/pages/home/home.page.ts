@@ -28,6 +28,7 @@ export class HomePage implements OnInit {
   public disable_list:boolean = true;
   public evScroll:any = {};
   disabledAccion:boolean = false;
+  urlColor:string ="success";
   constructor( 
     private _store: Store<STORAGES>,
     public _tools: ToolsService,
@@ -45,6 +46,12 @@ export class HomePage implements OnInit {
 
   ngOnInit() {
     //this.listArticulos = this._data.lista;
+    setInterval(()=>{
+      let color:string = "danger";
+      if( this.data.domicilio ) color = "warning";
+      if( this.data.mesa ) color = "success";
+      this.urlColor =  color;
+    }, 100 );
     this.getProductos();
   }
 
@@ -87,6 +94,7 @@ export class HomePage implements OnInit {
 
   buscarProducto( ev:any ){
     this.textoBuscar = ev.detail.value;
+    this.listArticulos = [];
     //console.log("***2", this.textoBuscar);
     this.querys = {
       where: {
@@ -127,7 +135,9 @@ export class HomePage implements OnInit {
 
   async seleccionando( data:any ){
     if( !data.check ){
-      data.cantidad = ( await this._tools.cantidadSelect( data ) );
+      let alertInput:any = await this._tools.cantidadSelect( data );
+      data.cantidad = alertInput.valor;
+      data.descripcion = alertInput.descripcion
       console.log( data );
       if( !data.cantidad ) return false;
       data.valor = Number( data.valor );

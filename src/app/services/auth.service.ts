@@ -6,6 +6,8 @@ import { tap } from 'rxjs/operators';
 import {Router, CanActivate } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { PERSONA } from '../interfas/sotarage';
+import { PersonaAction } from '../redux/app.actions';
+import { UserService } from './user.service';
 
 export interface User {
   heroesUrl: string;
@@ -22,7 +24,8 @@ export class AuthService implements CanActivate {
 
   constructor(
     private router: Router, 
-    private _store: Store<PERSONA>
+    private _store: Store<PERSONA>,
+    private _user: UserService
   ) {
       this._store.subscribe((store:any)=>{
         store = store.name;
@@ -71,19 +74,60 @@ export class AuthService implements CanActivate {
         const expiresAt = JSON.parse(expiration);
         return moment(expiresAt);
     }
+
     canActivate() {
-      const identity = this.dataUser;
+      const identity = this.dataUser || {};
+      console.log(identity)
       if (Object.keys(identity).length >0) {
+        this.validandoUser();
+        (async ()=>{
+          while (true){
+            await this.sleep(300);
+            this.validandoUser()
+          }
+        });
         return true;
       } else {
-        try {
-          if( this.dataApp.iniciado ) this.router.navigate(['/login']);
-          else this.router.navigate(['/login']);
-        } catch (error) {
-          this.router.navigate(['/login']);
-        }
-        
+        this.router.navigate(['login']);
         return false;
       }
+    }
+    urlreturn(splice, identity){
+      if(splice){
+        if (identity) {
+          return true;
+        } else {
+          this.router.navigate(['/']);
+          return false;
+        }
+      }
+    }
+    async sleep(segundos) {
+      return new Promise(resolve => {
+        setTimeout(async () => { resolve(true) }, segundos * 1000)
+      })
+    }
+    validandoUser(){
+      this._user.get({ where: { id: this.dataUser.id }}).subscribe((res:any)=>{ 
+        res = res.data[0]; 
+        if(!res) this.deleteStorages();
+        else{
+          this.dataUser = res;
+          this.pushStorages();
+        }
+        },(error)=> { this.deleteStorages() }
+      );
+    }
+
+    deleteStorages(){
+      let accion = new PersonaAction( this.dataUser, 'drop');
+      this._store.dispatch(accion);
+      localStorage.removeItem('user');
+      location.reload();
+    }
+
+    pushStorages(){
+      let accion = new PersonaAction( this.dataUser, 'put');
+      this._store.dispatch(accion);
     }
 }

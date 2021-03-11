@@ -125,6 +125,12 @@ export class ToolsService {
             type: 'number',
             value: "1",
             placeholder: 'Cantidad asignar...'
+          },
+          {
+            name: 'descripcion',
+            type: 'text',
+            value: "",
+            placeholder: 'Descripcion detallada...'
           }
         ],
         
@@ -134,7 +140,7 @@ export class ToolsService {
             cssClass: 'primaryBTN',
             handler: ( ev:any ) => {
               console.log('Confirm Ok', ev);
-              resolve( Number( ev.valor || 1 ) );
+              resolve( { valor: Number( ev.valor || 1 ), descripcion: ev.descripcion } );
             }
           },
           {
