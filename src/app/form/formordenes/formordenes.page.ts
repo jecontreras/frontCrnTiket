@@ -27,6 +27,7 @@ export class FormordenesPage implements OnInit {
   };
   dataUser:any = {};
   btnDisabled:boolean = false;
+  disabledBtn:boolean = false;
   evento:any = {};
 
   constructor(
@@ -79,6 +80,7 @@ export class FormordenesPage implements OnInit {
     this._orden.getArticulo({ where:{ factura: this.evento.id } }).subscribe((res:any)=>{
       this.data.articulo = _.map(res.data, row=>{
         return {
+          id: row.id,
           files: [ row.producto.foto || './assets/product.jpg'],
           titulo: row.producto.titulo,
           cantidadAduiridad: row.cantidad,
@@ -89,10 +91,26 @@ export class FormordenesPage implements OnInit {
     },(error)=>this._tools.presentToast("Error de servidor") );
   }
 
-  deleteCart( idx:any, item:any ){
-    this.data.articulo.splice(idx, 1)
-    let accion = new CarritoAction(item, 'delete');
-    this._store.dispatch( accion );
+  async deleteCart( idx:any, item:any ){
+    console.log("***", item );
+    if( this.data.estado == 1 || this.data.estado == 2 ) return false;
+    if( this.disabledBtn == true ) return false;
+    this.disabledBtn = true;
+    let alert:any = await this._tools.presentAlertConfirm( { mensaje: "Deseas eliminar Articulo" } );
+    if( !alert ) return false;
+    await this.nextBorrarData( item, idx );
+    this.disabledBtn = false;
+  }
+
+  async nextBorrarData( item:any, idx:any ){
+    return new Promise( resolve =>{
+      this._tools.presentLoading();
+      this._orden.deleteFacturaArticulo( { id: item.id } ).subscribe(( res:any )=>{
+        this._tools.presentToast( "Eliminado" );
+        this.data.articulo.splice( idx, 1 )
+        resolve( true );
+      },( )=> { resolve( false ); this._tools.presentToast("Error de servidor"); } );
+    });
   }
 
   close(){
@@ -168,12 +186,7 @@ export class FormordenesPage implements OnInit {
   }
 
   openCarro(){
-    this.modalCtrl.create({
-      component: BuscadorComponent,
-      componentProps: {
-        obj: true
-      }
-    }).then(modal=>modal.present());
+    
   }
 
   codigo(){

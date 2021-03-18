@@ -84,7 +84,7 @@
         <ion-label color="primary" slot="start">
           Productos
         </ion-label>
-        <ion-button fill="clear" slot="end" (click)="openCarro()" *ngIf="!evento">
+        <ion-button fill="clear" slot="end" (click)="openCarro()">
           <ion-icon name="add-circle-outline"></ion-icon>
         </ion-button>
       </ion-toolbar>
@@ -97,7 +97,7 @@
               <h3>Cantidad: {{ item.cantidadAduiridad || 1 }}</h3>
               <p>Precio: {{ _tools.monedaChange( 3, 2, ( item.precioOferta || item.precioVenta || 0 ) ) }}</p>
             </ion-label>
-            <ion-button fill="clear" color="danger" (click)="deleteCart( idx, item )" slot="end" *ngIf="!evento">
+            <ion-button fill="clear" color="danger" [disabled]="disabledBtn" (click)="deleteCart( idx, item )" slot="end">
               <ion-icon name="close-circle-outline"></ion-icon>
             </ion-button>
           </ion-item>

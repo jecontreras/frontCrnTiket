@@ -18,6 +18,10 @@ export class OrdenesService {
   update(query: any){
     return this._model.querys<ORDENES>('facturas/'+query.id, query, 'put');
   }
+
+  deleteFacturaArticulo(query: any){
+    return this._model.querys<ORDENES>('facturasArticulos/'+query.id, query, 'delete');
+  }
   
   getArticulo(query: any){
     return this._model.querys<ORDENES>('facturasArticulos/querys', query, 'post');

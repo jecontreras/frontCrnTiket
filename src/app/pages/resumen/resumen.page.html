@@ -1,6 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Resumen de Ventas</ion-title>
+    <ion-button slot="end" color="primary">Imprimir</ion-button>
   </ion-toolbar>
 </ion-header>
 
@@ -11,60 +12,83 @@
         <label for="">Pizzas Resumen: </label>
       </ion-text>
     </ion-item>
-    <ion-item *ngFor="let item of listRow.pizzas">
-      <ion-text color="primary">
-        <label for="">Pizza: </label>
-        <span class="colorNegro">{{ item.titulo | slice: 0: 100 }}</span>
-      </ion-text><br>
-      <ion-text color="primary">
-        <label for="">Cantidad: </label>
-        <span class="colorNegro">{{ item.cantidad }}</span>
-      </ion-text>
-      <br>
-      <ion-text color="primary">
-        <label for="">Precio Final: </label>
-        <span class="colorNegro">{{ item.precio }}</span>
-      </ion-text>
+    <ion-item *ngFor="let item of listRow.pizzas" lines="none">
+      <ion-label>
+        <ion-text color="dark" slot="start">
+          <label>Producto: </label>
+          <span> {{ item.titulo | slice: 0: 300 }} </span>
+        </ion-text><br>
+        <ion-text color="medium">
+          <label>Cantidad: </label>
+          <span> {{ item.cantidad }} </span>
+        </ion-text><br>
+        <ion-text color="dark">
+          <label>Total: </label>
+          <span> {{ _tools.monedaChange( 3, 2, item.precioTotal || 0 ) }} </span>
+        </ion-text>
+      </ion-label>
     </ion-item>
     <ion-item>
       <ion-text color="primary">
         <label for="">Gaceosa Resumen: </label>
       </ion-text>
     </ion-item>
-    <ion-item *ngFor="let item of listRow.gaceosas">
-      <ion-text color="primary">
-        <label for="">Pizza: </label>
-        <span class="colorNegro">{{ item.titulo | slice: 0: 100 }}</span>
-      </ion-text><br>
-      <ion-text color="primary">
-        <label for="">Cantidad: </label>
-        <span class="colorNegro">{{ item.cantidad }}</span>
-      </ion-text>
-      <br>
-      <ion-text color="primary">
-        <label for="">Precio Final: </label>
-        <span class="colorNegro">{{ item.precio }}</span>
-      </ion-text>
+    <ion-item *ngFor="let item of listRow.gaceosas" lines="none">
+      <ion-label>
+        <ion-text color="dark" slot="start">
+          <label>Producto: </label>
+          <span> {{ item.titulo | slice: 0: 300 }} </span>
+        </ion-text><br>
+        <ion-text color="medium">
+          <label>Cantidad: </label>
+          <span> {{ item.cantidad }} </span>
+        </ion-text><br>
+        <ion-text color="dark">
+          <label>Total: </label>
+          <span> {{ _tools.monedaChange( 3, 2, item.precioTotal || 0 ) }} </span>
+        </ion-text>
+      </ion-label>
     </ion-item>
     <ion-item>
       <ion-text color="primary">
         <label for="">Lasaña Resumen: </label>
       </ion-text>
     </ion-item>
-    <ion-item *ngFor="let item of listRow.lasana">
-      <ion-text color="primary">
-        <label for="">Pizza: </label>
-        <span class="colorNegro">{{ item.titulo | slice: 0: 100 }}</span>
-      </ion-text><br>
-      <ion-text color="primary">
-        <label for="">Cantidad: </label>
-        <span class="colorNegro">{{ item.cantidad }}</span>
-      </ion-text>
-      <br>
-      <ion-text color="primary">
-        <label for="">Precio Final: </label>
-        <span class="colorNegro">{{ item.precio }}</span>
-      </ion-text>
+    <ion-item *ngFor="let item of listRow.lasana" lines="none">
+      <ion-label>
+        <ion-text color="dark" slot="start">
+          <label>Producto: </label>
+          <span> {{ item.titulo | slice: 0: 300 }} </span>
+        </ion-text><br>
+        <ion-text color="medium">
+          <label>Cantidad: </label>
+          <span> {{ item.cantidad }} </span>
+        </ion-text><br>
+        <ion-text color="dark">
+          <label>Total: </label>
+          <span> {{ _tools.monedaChange( 3, 2, item.precioTotal || 0 ) }} </span>
+        </ion-text>
+      </ion-label>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-label>
+        <ion-text color="dark" slot="start">
+          <label for="">Precio Total Pizzas: </label>
+          <span class="colorNegro">{{ _tools.monedaChange( 3, 2, listRow.valorPizzas || 0 ) }}</span>
+        </ion-text><br><br>
+        <ion-text color="medium">
+          <label for="">Precio Total Gaceosa: </label>
+          <span class="colorNegro">{{ _tools.monedaChange( 3, 2, listRow.valorGaceosa || 0 ) }}</span>
+        </ion-text><br><br>
+        <ion-text color="dark">
+          <label for="">Precio Total Lasaña: </label>
+          <span class="colorNegro">{{ _tools.monedaChange( 3, 2, listRow.valorlasana || 0 ) }}</span>
+        </ion-text><br><br>
+        <ion-text color="dark">
+          <label for="">Precio Final: </label>
+          <span class="colorNegro">{{ _tools.monedaChange( 3, 2, listRow.precio || 0 ) }}</span>
+        </ion-text>
+      </ion-label>
     </ion-item>
   </ion-list>
 </ion-content>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OrdenesService } from 'src/app/service-component/ordenes.service';
 import * as moment from 'moment';
+import { ToolsService } from 'src/app/services/tools.service';
 
 @Component({
   selector: 'app-resumen',
@@ -22,7 +23,8 @@ export class ResumenPage implements OnInit {
   disableFiltro:boolean = false;
 
   constructor(
-    private _ventas: OrdenesService
+    private _ventas: OrdenesService,
+    public _tools: ToolsService
   ) { }
 
   ngOnInit() {
@@ -40,7 +42,8 @@ export class ResumenPage implements OnInit {
 
   getResumen(){
     this._ventas.getResumen( this.querys ).subscribe(( res:any )=>{
-      this.listRow = res.data;
+      this.listRow = res;
+      console.log( this.listRow )
     });
   }
 
