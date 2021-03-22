@@ -17,11 +17,13 @@
     <ion-item lines="none">
       <ion-toolbar>
         <ion-item slot="start" lines="none">
-          <ion-checkbox color="danger" [disabled]="data.mesa" [(ngModel)]="data.domicilio" checked slot="start"></ion-checkbox>
+          <ion-checkbox color="danger" [disabled]="data.mesa" [(ngModel)]="data.domicilio" checked slot="start">
+          </ion-checkbox>
           <ion-label>Domicilio</ion-label>
         </ion-item>
         <ion-item slot="end" lines="none">
-          <ion-checkbox [disabled]="data.domicilio" color="danger" [(ngModel)]="data.mesa" checked slot="start"></ion-checkbox>
+          <ion-checkbox [disabled]="data.domicilio" color="danger" [(ngModel)]="data.mesa" checked slot="start">
+          </ion-checkbox>
           <ion-label>Mesa</ion-label>
         </ion-item>
       </ion-toolbar>
@@ -64,7 +66,17 @@
 
       <ion-searchbar showCancelButton="focus" debounce="700" [value]="textoBuscar"
         (ionChange)="buscarProducto( $event)"></ion-searchbar>
+
     </ion-item>
+    <ion-item lines="none">
+      <ion-segment scrollable mode="md" (ionChange)="cambioCategoria( $event )" color="primary">
+        <ion-segment-button mode="md" [value]="item.id" class="textSegtman segmenButton"
+          *ngFor="let item of listCategorias">
+          <ion-label class="colorText" text-capitalize> {{ item.nombre }} </ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-item>
+
     <ion-item *ngFor="let item of listArticulos" (click)="seleccionando( item )" lines="none" [ngClass]="{
         'check': item.check
       }">
@@ -144,29 +156,32 @@
         </div>
       </ion-toolbar>
     </ion-item>
-    <ion-item *ngFor="let item of listSeleccionado" (click)="seleccionando( item )" lines="none">
-    <ion-label>
-      <ion-text color="dark" slot="start">
-        <label>Producto: </label>
-        <span> {{ item.titulo | slice: 0: 300 }} </span>
-      </ion-text><br>
-      <ion-text color="danger" slot="start">
-        <label>Descripcion: </label>
-        <span> {{ item.descripcion | slice: 0: 300 }} </span>
-      </ion-text><br>
-      <ion-text color="medium">
-        <label>Cantidad: </label>
-        <span> {{ item.cantidad }} </span>
-      </ion-text><br>
-      <ion-text color="dark">
-        <label>Precio: </label>
-        <span> {{ _tools.monedaChange( 3, 2, item.valor || 0 ) }} </span>
-      </ion-text><br>
-      <ion-text color="dark">
-        <label>Total: </label>
-        <span> {{ _tools.monedaChange( 3, 2, item.valor * item.cantidad || 0 ) }} </span>
-      </ion-text>
-    </ion-label>
+    <ion-item *ngFor="let item of listSeleccionado" lines="none">
+      <ion-label>
+        <ion-text color="dark" slot="start">
+          <label>Producto: </label>
+          <span> {{ item.titulo | slice: 0: 300 }} </span>
+        </ion-text><br>
+        <ion-text color="danger" slot="start">
+          <label>Descripcion: </label>
+          <span> {{ item.descripcion | slice: 0: 300 }} </span>
+        </ion-text><br>
+        <ion-text color="medium">
+          <label>Cantidad: </label>
+          <span> {{ item.cantidad }} </span>
+        </ion-text><br>
+        <ion-text color="dark">
+          <label>Precio: </label>
+          <span> {{ _tools.monedaChange( 3, 2, item.valor || 0 ) }} </span>
+        </ion-text><br>
+        <ion-text color="dark">
+          <label>Total: </label>
+          <span> {{ _tools.monedaChange( 3, 2, item.valor * item.cantidad || 0 ) }} </span>
+        </ion-text>
+      </ion-label>
+      <ion-button slot="end" fill="clear" (click)="borrarSelect( item )">
+        <ion-icon name="close-circle-outline"></ion-icon>
+      </ion-button>
     </ion-item>
   </ion-list>
 

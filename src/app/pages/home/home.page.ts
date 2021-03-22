@@ -6,6 +6,8 @@ import { DataService } from 'src/app/services/data.service';
 import { ToolsService } from 'src/app/services/tools.service';
 import { ProductosService } from 'src/app/service-component/productos.service';
 import { OrdenesService } from 'src/app/service-component/ordenes.service';
+import { CategoriaService } from 'src/app/service-component/categoria.service';
+import { CarritoAction } from 'src/app/redux/app.actions';
 
 @Component({
   selector: 'app-home',
@@ -29,18 +31,22 @@ export class HomePage implements OnInit {
   public evScroll:any = {};
   disabledAccion:boolean = false;
   urlColor:string ="success";
+  listCategorias:any = [];
+  listCarritos:any = [];
   constructor( 
     private _store: Store<STORAGES>,
     public _tools: ToolsService,
     private _data: DataService,
     private _productos: ProductosService,
-    private _ordenes: OrdenesService
+    private _ordenes: OrdenesService,
+    private _categorias: CategoriaService
   ) {
     this._store.subscribe((store:any)=>{
       store = store.name;
       if( !store ) return false;
       // this.listRow = store.ordenes || [];
       this.dataUser = store.persona || {};
+      this.listCarritos = store.carrito || [];
     });
   }
 
@@ -53,6 +59,17 @@ export class HomePage implements OnInit {
       this.urlColor =  color;
     }, 100 );
     this.getProductos();
+    this.getCategorias();
+  }
+
+  getCategorias(){
+    this._categorias.get( {
+      where: { estado: 0 },
+      sort: 'ordenar ASC',
+      limit: 1000
+    } ).subscribe(( res:any )=>{
+      this.listCategorias = res.data;
+    });
   }
 
   doRefresh(ev){
@@ -66,6 +83,13 @@ export class HomePage implements OnInit {
     //console.log(ev);
     this.evScroll = ev;
     this.querys.skip++;
+    this.getProductos();
+  }
+
+  cambioCategoria( ev:any ){
+    this.querys.where.categoria = ev.detail.value;
+    this.querys.skip = 0;
+    this.listArticulos = [];
     this.getProductos();
   }
 
@@ -145,10 +169,16 @@ export class HomePage implements OnInit {
       this.listSeleccionado.push( data );
       data.check = !data.check;
     }else{
+      let alert:any = await this._tools.presentAlertConfirm( { mensaje: "Esta Seguro desea eliminar" });
+      if( !alert ) return false;
       this.listSeleccionado = this.listSeleccionado.filter( ( item:any )=> item.id !== data.id );
       data.check = !data.check;
     }
     this.suma();
+  }
+
+  async borrarSelect( item:any ){
+    await this.seleccionando( item );
   }
 
   suma(){
@@ -175,6 +205,7 @@ export class HomePage implements OnInit {
     console.log( this.data );
     let data:any = {
       cliente: this.data.cliente,
+      id: this._tools.codigo(),
       factura:{
         idVendedor: this.dataUser.id,
         precio: this.data.total,
@@ -187,24 +218,46 @@ export class HomePage implements OnInit {
       },
       articulo: this.listSeleccionado
     };
-    this._ordenes.saved( data ).subscribe(( res:any )=>{
-      res = res.data;
-      this.disabledAccion = false;
-      this._tools.presentToast( "Tiket creado exitos");
-      this._tools.presentAlertConfirm( { mensaje: "Tiket creado con el nombre de "+ res.cliente } );
-      this.resetearDatos();
-    },( error:any )=> { this._tools.presentToast( "Tenemos problemas de conexion"); this.disabledAccion = false; } );
+    let accion:any = new CarritoAction( data, "post" );
+    this._store.dispatch( accion );
+    this._tools.presentToast( "Tiket creado exitos");
+    this._tools.presentAlertConfirm( { mensaje: "Tiket creado con el nombre de "+ data.cliente } );
+    setTimeout( async ()=> { let listaCarrito = this.listCarritos || []; await this.nextGuardar( listaCarrito ) } ,3000 );
+    this.disabledAccion = false;
+  }
+
+  async nextGuardar( list ){
+    for( let row of list ){
+      await this.guardadoFull( row );
+      let accion = new CarritoAction( row, 'delete');
+      this._store.dispatch( accion );
+    }
+    return false;
+  }
+
+  async guardadoFull( row ){
+    return new Promise( resolve =>{
+      this._ordenes.saved( row ).subscribe(( res:any )=>{
+        res = res.data;
+        this.resetearDatos();
+        resolve( true );
+      },( error:any )=> { this._tools.presentToast( "Tenemos problemas de conexion");resolve( false ); } );
+    } );
   }
 
   resetearDatos(){
     this.data = {};
     this.listSeleccionado = [];
-    this.listArticulos = _.map( row =>{
-      return {
-        ...row,
-        check: false
-      };
-    });
+    this.vista = true;
+    this.listArticulos = [];
+    this.querys = {
+      where: {
+        estado: true
+      },
+      skip: 0
+    };
+    this.getProductos();
+    console.log( this.listArticulos );
   }
 
 }
