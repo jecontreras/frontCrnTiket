@@ -8,6 +8,7 @@ import { FormordenesPageRoutingModule } from './formordenes-routing.module';
 
 import { FormordenesPage } from './formordenes.page';
 import { PipeModule } from 'src/app/pipe/pipe.module';
+import { FormArticulosPageModule } from '../form-articulos/form-articulos.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { PipeModule } from 'src/app/pipe/pipe.module';
     CommonModule,
     FormsModule,
     IonicModule,
-    FormordenesPageRoutingModule
+    FormordenesPageRoutingModule,
+    FormArticulosPageModule
   ],
   declarations: [FormordenesPage]
 })

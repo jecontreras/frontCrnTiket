@@ -1,6 +1,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Resumen de Ventas</ion-title>
+    <ion-button slot="end" color="primary" (click)="getResumen()">
+      <ion-icon name="reload-outline"></ion-icon>
+    </ion-button>
     <ion-button slot="end" color="primary">Imprimir</ion-button>
   </ion-toolbar>
 </ion-header>
@@ -76,7 +79,7 @@
           <label for="">Precio Total Pizzas: </label>
           <span class="colorNegro">{{ _tools.monedaChange( 3, 2, listRow.valorPizzas || 0 ) }}</span>
         </ion-text><br><br>
-        <ion-text color="medium">
+        <ion-text color="dark">
           <label for="">Precio Total Gaceosa: </label>
           <span class="colorNegro">{{ _tools.monedaChange( 3, 2, listRow.valorGaceosa || 0 ) }}</span>
         </ion-text><br><br>
@@ -86,7 +89,7 @@
         </ion-text><br><br>
         <ion-text color="dark">
           <label for="">Precio Final: </label>
-          <span class="colorNegro">{{ _tools.monedaChange( 3, 2, listRow.precio || 0 ) }}</span>
+          <span class="colorNegro">{{ _tools.monedaChange( 3, 2, listRow.valorTotal || 0 ) }}</span>
         </ion-text>
       </ion-label>
     </ion-item>

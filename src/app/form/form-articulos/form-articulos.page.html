@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button slot="start" fill="clear" (click)="close()">
+      <ion-icon name="close-outline"></ion-icon>
+    </ion-button>
+    <ion-text>
+      <ion-label>
+        Articulos
+      </ion-label>
+    </ion-text>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-list-header>
+      <ion-toolbar>
+        <div class="ion-text-center">
+          <ion-title color="primary">
+            Datos del pedido
+          </ion-title>
+        </div>
+      </ion-toolbar>
+    </ion-list-header>
+    <ion-item>
+
+      <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullMin="200" pullMax="300">
+        <ion-refresher-content>
+        </ion-refresher-content>
+      </ion-refresher>
+
+      <ion-searchbar showCancelButton="focus" debounce="700" [value]="textoBuscar"
+        (ionChange)="buscarProducto( $event)"></ion-searchbar>
+
+    </ion-item>
+    <ion-item lines="none">
+      <ion-segment scrollable mode="md" (ionChange)="cambioCategoria( $event )" color="primary">
+        <ion-segment-button mode="md" [value]="item.id" class="textSegtman segmenButton"
+          *ngFor="let item of listCategorias">
+          <ion-label class="colorText" text-capitalize> {{ item.nombre }} </ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-item>
+
+    <ion-item *ngFor="let item of listArticulos" (click)="seleccionando( item )" lines="none" [ngClass]="{
+        'check': item.check
+      }">
+      <ion-text color="dark" slot="start">
+        {{ item.titulo | slice: 0: 100 }}
+      </ion-text>
+      <ion-text color="dark" slot="end">
+        {{ _tools.monedaChange( 3, 2, item.valor || 0 ) }}
+      </ion-text>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-infinite-scroll threshold="150px" (ionInfinite)="loadData( $event )">
+        <ion-infinite-scroll-content loadingSpinner="crescent" loadingtext="Cargando data..">
+
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    </ion-item>
+  </ion-list>
+
+</ion-content>
+
+<ion-toolbar>
+  <ion-footer>
+    <ion-button (click)="finalizar()" color="primary" expand="full">
+      Agregar
+    </ion-button>
+  </ion-footer>
+</ion-toolbar>

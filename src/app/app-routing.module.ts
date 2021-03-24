@@ -24,6 +24,10 @@ const routes: Routes = [
   },  {
     path: 'resumen',
     loadChildren: () => import('./pages/resumen/resumen.module').then( m => m.ResumenPageModule)
+  },
+  {
+    path: 'form-articulos',
+    loadChildren: () => import('./form/form-articulos/form-articulos.module').then( m => m.FormArticulosPageModule)
   }
 
 

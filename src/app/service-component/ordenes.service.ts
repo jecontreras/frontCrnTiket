@@ -19,6 +19,10 @@ export class OrdenesService {
     return this._model.querys<ORDENES>('facturas/'+query.id, query, 'put');
   }
 
+  savedFacturaArticulo (query: any){
+    return this._model.querys<ORDENES>('facturasArticulos', query, 'post');
+  }
+
   deleteFacturaArticulo(query: any){
     return this._model.querys<ORDENES>('facturasArticulos/'+query.id, query, 'delete');
   }

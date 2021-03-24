@@ -9,6 +9,7 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 import { BuscadorComponent } from 'src/app/components/buscador/buscador.component';
 import { OrdenesAction } from 'src/app/redux/app.actions';
+import { FormArticulosPage } from '../form-articulos/form-articulos.page';
 
 @Component({
   selector: 'app-formordenes',
@@ -17,18 +18,18 @@ import { OrdenesAction } from 'src/app/redux/app.actions';
 })
 export class FormordenesPage implements OnInit {
 
-  titulo:string = 'Create';
-  data:any = {
+  titulo: string = 'Create';
+  data: any = {
     cliente: {},
     factura: {
       fecha_pedido: moment().format('YYYY-MM-DD')
     },
     articulo: []
   };
-  dataUser:any = {};
-  btnDisabled:boolean = false;
-  disabledBtn:boolean = false;
-  evento:any = {};
+  dataUser: any = {};
+  btnDisabled: boolean = false;
+  disabledBtn: boolean = false;
+  evento: any = {};
 
   constructor(
     private modalCtrl: ModalController,
@@ -38,18 +39,18 @@ export class FormordenesPage implements OnInit {
     private navparams: NavParams
   ) {
 
-    this._store.subscribe((store:any)=>{
+    this._store.subscribe((store: any) => {
       store = store.name;
       this.data.articulo = store.carrito;
       this.dataUser = store.persona || {};
       this.suma();
     });
 
-   }
+  }
 
   ngOnInit() {
     this.evento = this.navparams.get('obj');
-    if(this.evento){
+    if (this.evento) {
       this.data = {
         ... this.evento,
         factura: {
@@ -70,72 +71,72 @@ export class FormordenesPage implements OnInit {
         articulo: []
       };
       this.titulo = "Ver";
-      console.log( this.data, this.evento );
+      console.log(this.data, this.evento);
       this.getArticulo();
     }
   }
 
-  getArticulo(){
+  getArticulo() {
     this._tools.presentLoading();
-    this._orden.getArticulo({ where:{ factura: this.evento.id } }).subscribe((res:any)=>{
-      this.data.articulo = _.map(res.data, row=>{
+    this._orden.getArticulo({ where: { factura: this.evento.id } }).subscribe((res: any) => {
+      this.data.articulo = _.map(res.data, row => {
         return {
           id: row.id,
-          files: [ row.producto.foto || './assets/product.jpg'],
+          files: [row.producto.foto || './assets/product.jpg'],
           titulo: row.producto.titulo,
           cantidadAduiridad: row.cantidad,
           precioVenta: row.precio
         };
       });
       this._tools.dismisPresent();
-    },(error)=>this._tools.presentToast("Error de servidor") );
+    }, (error) => this._tools.presentToast("Error de servidor"));
   }
 
-  async deleteCart( idx:any, item:any ){
-    console.log("***", item );
-    if( this.data.estado == 1 || this.data.estado == 2 ) return false;
-    if( this.disabledBtn == true ) return false;
+  async deleteCart(idx: any, item: any) {
+    console.log("***", item);
+    if (this.data.estado == 1 || this.data.estado == 2) return false;
+    if (this.disabledBtn == true) return false;
     this.disabledBtn = true;
-    let alert:any = await this._tools.presentAlertConfirm( { mensaje: "Deseas eliminar Articulo" } );
-    if( !alert ) return false;
-    await this.nextBorrarData( item, idx );
+    let alert: any = await this._tools.presentAlertConfirm({ mensaje: "Deseas eliminar Articulo" });
+    if (!alert) return false;
+    await this.nextBorrarData(item, idx);
     this.disabledBtn = false;
   }
 
-  async nextBorrarData( item:any, idx:any ){
-    return new Promise( resolve =>{
+  async nextBorrarData(item: any, idx: any) {
+    return new Promise(resolve => {
       this._tools.presentLoading();
-      this._orden.deleteFacturaArticulo( { id: item.id } ).subscribe(( res:any )=>{
-        this._tools.presentToast( "Eliminado" );
-        this.data.articulo.splice( idx, 1 )
-        resolve( true );
-      },( )=> { resolve( false ); this._tools.presentToast("Error de servidor"); } );
+      this._orden.deleteFacturaArticulo({ id: item.id }).subscribe((res: any) => {
+        this._tools.presentToast("Eliminado");
+        this.data.articulo.splice(idx, 1)
+        resolve(true);
+      }, () => { resolve(false); this._tools.presentToast("Error de servidor"); });
     });
   }
 
-  close(){
+  close() {
     this.modalCtrl.dismiss();
   }
 
-  suma(){
-    let suma =  0;
+  suma() {
+    let suma = 0;
     let ganancias = 0;
-    for(let row of this.data.articulo){
-      let contando:number = ( row.precioOferta || row.precioVenta || 0 ) * Number( row.cantidadAduiridad ) || 1;
-      suma+= contando;
-      ganancias+= ( contando * row.comision || 10 ) / 100;
+    for (let row of this.data.articulo) {
+      let contando: number = (row.precioOferta || row.precioVenta || 0) * Number(row.cantidadAduiridad) || 1;
+      suma += contando;
+      ganancias += (contando * row.comision || 10) / 100;
     }
     this.data.total = suma;
     this.data.ganancias = ganancias;
   }
 
-  agregar(){
-    if(!this.dataUser.id) return false;
-    if( !this.data.cliente.cedulaCliente || !this.data.cliente.celularCliente || !this.data.cliente.ciudadCliente || !this.data.cliente.direccionCliente) return this._tools.presentToast("Error llenar los campos requeridos");
-    if(Object.keys(this.data.articulo).length == 0 ) return this._tools.presentToast("Error no ay articulos agregados");
+  agregar() {
+    if (!this.dataUser.id) return false;
+    if (!this.data.cliente.cedulaCliente || !this.data.cliente.celularCliente || !this.data.cliente.ciudadCliente || !this.data.cliente.direccionCliente) return this._tools.presentToast("Error llenar los campos requeridos");
+    if (Object.keys(this.data.articulo).length == 0) return this._tools.presentToast("Error no ay articulos agregados");
     this.suma();
     this.btnDisabled = true;
-    let data:any = {
+    let data: any = {
       factura: {
         idVendedor: this.dataUser.id,
         codigo: this.codigo(),
@@ -161,7 +162,7 @@ export class FormordenesPage implements OnInit {
       },
       articulo: this.data.articulo
     };
-    this._orden.saved( data ).subscribe((res:any)=>{
+    this._orden.saved(data).subscribe((res: any) => {
       this._tools.presentToast("Orden creado exitoso");
       this.data.id = res.id;
       this.data = {
@@ -172,24 +173,43 @@ export class FormordenesPage implements OnInit {
         articulo: []
       };
       this.btnDisabled = false;
-      let accion = new OrdenesAction( res.data, 'post');
+      let accion = new OrdenesAction(res.data, 'post');
       this._store.dispatch(accion);
       this.borrarCarrito();
       this.close();
-    },(error)=> console.error(error));
-    
+    }, (error) => console.error(error));
+
   }
 
-  borrarCarrito(){
-    let accion = new CarritoAction( { }, 'drop');
-    this._store.dispatch( accion );
+  borrarCarrito() {
+    let accion = new CarritoAction({}, 'drop');
+    this._store.dispatch(accion);
   }
 
-  openCarro(){
-    
+  async openCarro() {
+    let modal = await this.modalCtrl.create({
+      component: FormArticulosPage,
+      componentProps: {
+        obj: this.data
+      }
+    });
+    modal.present();
+    const { data } = await modal.onWillDismiss();
+    console.log(data);
+    if( !data ) return false;
+    this.data.articulo.push( ..._.map( data.articulos, ( row:any )=>{
+      return {
+        id: row.id,
+        files: [row.producto.foto || './assets/product.jpg'],
+        titulo: row.producto.titulo,
+        cantidadAduiridad: row.cantidad,
+        precioVenta: row.precio
+      };
+    }));
+    this.suma();
   }
 
-  codigo(){
+  codigo() {
     return (Date.now().toString(20).substr(2, 3) + Math.random().toString(20).substr(2, 3)).toUpperCase();
   }
 
