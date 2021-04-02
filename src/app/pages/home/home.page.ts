@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import * as _ from 'lodash';
 import { Store } from '@ngrx/store';
 import { STORAGES } from 'src/app/interfas/sotarage';
@@ -8,6 +8,7 @@ import { ProductosService } from 'src/app/service-component/productos.service';
 import { OrdenesService } from 'src/app/service-component/ordenes.service';
 import { CategoriaService } from 'src/app/service-component/categoria.service';
 import { CarritoAction } from 'src/app/redux/app.actions';
+import { IonSegment } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -33,6 +34,9 @@ export class HomePage implements OnInit {
   urlColor:string ="success";
   listCategorias:any = [];
   listCarritos:any = [];
+
+  @ViewChild(IonSegment, {static: false}) segment: IonSegment;
+
   constructor( 
     private _store: Store<STORAGES>,
     public _tools: ToolsService,
@@ -69,6 +73,7 @@ export class HomePage implements OnInit {
       limit: 1000
     } ).subscribe(( res:any )=>{
       this.listCategorias = res.data;
+      this.segment.value = this.listCategorias[0].id;
     });
   }
 
