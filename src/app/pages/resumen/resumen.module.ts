@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { ResumenPageRoutingModule } from './resumen-routing.module';
 
 import { ResumenPage } from './resumen.page';
+import { Printer } from '@ionic-native/printer/ngx';
 
 @NgModule({
   imports: [
@@ -14,6 +15,9 @@ import { ResumenPage } from './resumen.page';
     FormsModule,
     IonicModule,
     ResumenPageRoutingModule
+  ],
+  providers:[
+    Printer
   ],
   declarations: [ResumenPage]
 })
